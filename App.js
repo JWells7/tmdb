@@ -73,7 +73,8 @@ movieNameInputSubmitted = () => {
   let url = "http://api.themoviedb.org/3/search/movie?query=" + this.state.movieNameInput + "&api_key=8ad43d355fccbef40dc3527123bb25ff&language=en-US&page=1&include_adult=false";
 
     fetch(url).then(response => response.json()).then(json => {
-      // console.log(json.results[0])
+      // console.debug(json.results[0])
+        consdole.debug()
         this.setState({
           movie: json.results[0]
       });
