@@ -74,12 +74,11 @@ movieNameInputSubmitted = () => {
 
     fetch(url).then(response => response.json()).then(json => {
       // console.debug(json.results[0])
-        consdole.debug()
-        this.setState({
-          movie: json.results[0]
-      });
+      console.log(json.results[0])
+      this.setState({
+        movie: json.results[0]
+      })
     });
-        this.setState({movieNameInput: null})
   }
 
   render() {
