@@ -29,21 +29,21 @@ class Movie extends React.Component {
     return (
       <View style={styles.movie}>
         <Image style={styles.backdrop}
-                source={{uri: "http://image.tmdb.org/t/p/w500/" + this.props.movie.backdrop_path}} />
+               source={{uri: "http://image.tmdb.org/t/p/w500/" + this.props.movie.backdrop_path}} />
         <View style={styles.posterContainer}>
           <Image style={styles.poster}
-                source={{uri: "http://image.tmdb.org/t/p/w500/" + this.props.movie.poster_path}} />
+                 source={{uri: "http://image.tmdb.org/t/p/w500/" + this.props.movie.poster_path}} />
         </View>
         <View style={styles.titleAndVotes}>
           <Text style={styles.title}>
             {this.props.movie.title}
           </Text>
           <Text style={styles.votes}>
-          {this.props.movie.vote_average}
+            {this.props.movie.vote_average}
           </Text>
         </View>
         <Text style={styles.overview}>
-          {this.props.movie.overview}
+            {this.props.movie.overview}
         </Text>
       </View>
     );
@@ -58,46 +58,39 @@ export default class App extends React.Component {
       movie: null
     }
   }
-movieNameInputChanged = (text) => {
-  this.setState({
-    movieNameInput: text
-    });
-  }
-movieNameInputSubmitted = () => {
-    // Make the TMDB API call, receive results. Leave the next two lines alone.
-    // const apiKey = 'e9743662f5a39568d8e25225f2c97e09'
 
-    // let url = "http://api.themoviedb.org/3/search/movie?query=" + this.state.movieNameInput
-    // url    += "&api_key=" + apiKey
-    // url    += "&language=en-US&page=1&include_adult=false"
-  let url = "http://api.themoviedb.org/3/search/movie?query=" + this.state.movieNameInput + "&api_key=8ad43d355fccbef40dc3527123bb25ff&language=en-US&page=1&include_adult=false";
+  movieInputChanged(text){
+     this.setState({
+       movieNameInput: text
+     });
+   }
 
-    fetch(url).then(response => response.json()).then(json => {
-      // console.debug(json.results[0])
-      console.log(json.results[0])
-      this.setState({
-        movie: json.results[0]
-      })
-    });
-  }
+   movieNameInputSubmitted() {
+      // Make the TMDB API call, receive results. Leave the next two lines alone.
+      let url = "http://api.themoviedb.org/3/search/movie?query=" + this.state.movieNameInput + "&api_key=8ad43d355fccbef40dc3527123bb25ff&language=en-US&page=1&include_adult=false";
+      fetch(url).then(response => response.json()).then(json => {
+        console.log(json.results[0])
+        this.setState({
+          movie: json.results[0]
+        })
+      });
+    }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <TextInput style={styles.movieNameInput}
-                   placeholder="Enter a movie name!"
-                   placeholderTextColor="#aaa"
-                      value={this.state.movieNameInput}
-                      autoFocus={true}
-                   onChangeText={(newText) => this.setState({movieNameInput: newText})}
-                   OnSubmitEditing={this.movieNameInputSubmitted}/>
-        {/*Conditionally show the Movie component, only if there's a movie in state (so not initially)*/}
-        {this.state.movie && <Movie movie = {this.state.movie} />}
-      </View>
+    render() {
+       return (
+         <View style={styles.container}>
+           <TextInput style={styles.movieNameInput}
+                      placeholder="Enter a movie name!"
+                      placeholderTextColor="#aaa"
+                      onChangeText={(text) => this.movieInputChanged(text)}
+                      onSubmitEditing={() => this.movieNameInputSubmitted()}/>
+           {/*Conditionally show the Movie component, only if there's a movie in state (so not initially)*/}
+           {this.state.movie && <Movie movie = {this.state.movie} />}
+         </View>
+       );
+     }
+   }
 
-    );
-  }
-}
 
 // Styles. OK to leave alone, unless creativity strikes.
 const styles = StyleSheet.create({
